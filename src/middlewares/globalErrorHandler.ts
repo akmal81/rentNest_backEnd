@@ -18,8 +18,7 @@ export const globalErrorHandler = async(
     let errorMessage = err.message || "Internal Server Error";
     let errorName = err.name || "Internal Server Error";
 
-    //todo
-    // if(err instanceof  z.ZodError){}
+   
 
     if(err instanceof AppError){
         statusCode = err.statusCode;
@@ -28,15 +27,15 @@ export const globalErrorHandler = async(
     }
 
     else if (err instanceof Prisma.PrismaClientValidationError) {
-        statusCode = httpStatus.BAD_REQUEST;
-        errorMessage = "You have provided incorrect field type or missing fields"
+        statusCode = httpStatus.CONFLICT;
+        errorMessage = "Incorrect field type provided or missing fields"
     }
     else if (err instanceof Prisma.PrismaClientKnownRequestError) {
             if(err.code === 'P2002'){
-                statusCode = httpStatus.BAD_REQUEST;
+                statusCode = httpStatus.CONFLICT;
                 errorMessage = "Duplicate Key Error";
             }else if(err.code === 'P2003'){
-                statusCode = httpStatus.BAD_REQUEST,
+                statusCode = httpStatus.CONFLICT,
                 errorMessage = "Foreign Key constraint failed"
             }else if (err.code === "P2025") {
                 statusCode = httpStatus.BAD_REQUEST;
@@ -46,15 +45,15 @@ export const globalErrorHandler = async(
     }
     else if(err instanceof Prisma.PrismaClientInitializationError){
         if(err.errorCode === 'P1000'){
-            statusCode = httpStatus.BAD_REQUEST;
+            statusCode = httpStatus.UNAUTHORIZED;
             errorMessage = "Authentication Failed against Database Server"
         }else if (err.errorCode === "P1001") {
-            statusCode = httpStatus.BAD_REQUEST,
+            statusCode = httpStatus.INTERNAL_SERVER_ERROR,
             errorMessage = "Cannot reach database server"
         }
     }
     else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
-        statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+        statusCode = httpStatus.BAD_REQUEST;
         errorMessage = "Error Occured During query execution"
     }
     
@@ -63,18 +62,10 @@ export const globalErrorHandler = async(
         errorMessage = "Inernal server error!!"
     }
 
-
-
-
     const errorResposne: IErroResponse = {
         success: false,
-        statusCode:statusCode,
-        name:err.name,
         message:errorMessage,
-        error:err,
-
-        // errorSources
-
+        errorDetails:err,
     }
 
     res.status(statusCode).json(errorResposne)
