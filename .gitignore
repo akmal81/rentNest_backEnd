@@ -1,6 +1,7 @@
 node_modules
 dist
 .env
+.gitignore
 generated
 /generated/prisma
 
