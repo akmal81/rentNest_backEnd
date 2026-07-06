@@ -1,4 +1,5 @@
 
+import { RentRequestStatus } from "../../../generated/prisma/enums"
 import AppError from "../../errorHelper/appError"
 import { prisma } from "../../lib/prisma"
 import { ICreateNewProperty, IUpdateProperty } from "./landlord.interface"
@@ -40,7 +41,7 @@ const updatePropertyIntoDb = async (propertyId: string, landlordId: string, payl
 }
 
 
-const revomePropertyFromDb = async (propertyId:string, landlordId:string) => {
+const revomePropertyFromDb = async (propertyId: string, landlordId: string) => {
     const property = await prisma.property.findUniqueOrThrow({
         where: {
             id: propertyId
@@ -55,20 +56,104 @@ const revomePropertyFromDb = async (propertyId:string, landlordId:string) => {
     }
 
     const removedData = prisma.property.delete({
-        where:{
+        where: {
             id: propertyId,
-            landlordId:landlordId
+            landlordId: landlordId
         }
     })
-return removedData
+    return removedData
 
 
+}
+
+const getAllLandlordsRentalRequestsFromDb = async (landlordId: string) => {
+    const rentalRequests = await prisma.property.findMany({
+        where: {
+            landlordId,
+            rentRequest: {
+                some: {}
+            }
+        },
+        include: {
+            rentRequest: {
+                include: {
+                    tenant: {
+                        select: {
+                            name: true,
+                            email: true,
+                            profile: {
+                                select: {
+                                    phoneNumber: true
+                                }
+                            }
+
+                        }
+                    }
+
+                },
+
+            }
+        }
+    })
+
+
+
+    return rentalRequests
+
+}
+
+const updateRentalRequestStatusIntoDb = async (
+    rentalRequestId: string, 
+    status: RentRequestStatus) => {
+
+        // c
+
+    const transactionResult = await prisma.$transaction(
+        async (tx) => {
+            // if already approved
+
+            // const checkRent
+            const updateRequestStatus = await tx.rentRequest.update({
+                where: {
+                    id: rentalRequestId
+                },
+                data: {
+                    status:status
+                },
+                include:{
+                    property:{
+                        select: {
+                            availablity:true
+                        }
+                    }
+                }
+            })
+
+
+            if (updateRequestStatus.status === "APPROVED") {
+
+                await tx.property.update({
+                    where: {
+                        id: updateRequestStatus.propertyId
+                    },
+                    data: {
+                        availablity: "BOOKED"
+                    }
+                })
+            }
+
+            return updateRequestStatus
+        }
+    )
+    return transactionResult
 }
 
 export const landLordServices = {
     createPropertyIntoDb,
     updatePropertyIntoDb,
-    revomePropertyFromDb
+    revomePropertyFromDb,
+    getAllLandlordsRentalRequestsFromDb,
+    updateRentalRequestStatusIntoDb
 }
 
 

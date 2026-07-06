@@ -22,8 +22,8 @@ Admin Password   : admin123
 8. **PUT/api/landlord/properties/:id         Update property listing**
 9. **DELETE/api/landlord/properties/:id      Remove property listing**
 
-10. *GET/api/landlord/requests       Get all rental requests for landlord's properties*
-11. *PATCH-/api/landlord/requests/:id        Approve or reject a rental request*
+10. **GET/api/landlord/requests   Get all rental requests for landlord's properties**
+11. **PATCH-/api/landlord/requests/:id        Approve or reject a rental request**
 
 
 # Rental Requests

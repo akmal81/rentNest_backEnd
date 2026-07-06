@@ -20,5 +20,15 @@ router.delete(
     auth(Role.LANDLORD),
     landlordController.removeProperty
 )
+router.get(
+    "/requests",
+    auth(Role.LANDLORD),
+    landlordController.getAllLandlordsRentalRequests
+)
+router.patch(
+    "/requests/:id",
+    auth(Role.LANDLORD),
+    landlordController.updateRentalRequestStatus
+)
 
 export const landlordRotes = router;

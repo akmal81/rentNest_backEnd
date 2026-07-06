@@ -23,8 +23,8 @@ const updatedProperty = catchAsync(
         const landlordId = req.user?.id;
         const propertyId = req.params.id;
         const updateResult = await landLordServices.updatePropertyIntoDb(
-            propertyId as string, 
-            landlordId as string, 
+            propertyId as string,
+            landlordId as string,
             req.body);
         sendResponse(res, {
             success: true,
@@ -39,9 +39,9 @@ const removeProperty = catchAsync(
         const landlordId = req.user?.id;
         const propertyId = req.params.id;
         const removedResult = await landLordServices.revomePropertyFromDb(
-            propertyId as string, 
-            landlordId as string, 
-            );
+            propertyId as string,
+            landlordId as string,
+        );
         sendResponse(res, {
             success: true,
             statusCode: httpStatus.CREATED,
@@ -51,9 +51,42 @@ const removeProperty = catchAsync(
     }
 )
 
+const getAllLandlordsRentalRequests = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const landlordId = req.user?.id;
+        const rentalRequests = await landLordServices.getAllLandlordsRentalRequestsFromDb(
+            landlordId as string
+        )
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "Properties Rental Requests Retrive Successfull",
+            data: rentalRequests
+        })
+    }
+);
+
+
+const updateRentalRequestStatus = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const rentalRequestId = req.params.id;
+        const {status} = req.body
+        const rentalRequestStatus = await landLordServices.updateRentalRequestStatusIntoDb(
+            rentalRequestId as string, status
+        )
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "Rental Request Status Updated",
+            data: rentalRequestStatus
+        })
+    }
+);
 
 export const landlordController = {
     createdProperty,
     updatedProperty,
-    removeProperty
+    removeProperty,
+    getAllLandlordsRentalRequests,
+    updateRentalRequestStatus
 }
