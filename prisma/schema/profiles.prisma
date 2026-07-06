@@ -4,10 +4,11 @@ model Profile {
   bio          String?
 
   userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
+  @@index([userId])
   @@map("profiles")
 }

@@ -3,10 +3,10 @@ import { auth } from "../../middlewares/auth";
 import { Role } from "../../../generated/prisma/enums";
 import { authController } from "./auth.controller";
 
-const router =Router();
+const router = Router();
 
 router.post(
-    "/register", 
+    "/register",
     authController.registerUser
 )
 
@@ -15,11 +15,11 @@ router.post(
     authController.loginUser
 )
 
-// router.get(
-//     "/me",
-//     auth(Role.TENANT, Role.LANDLORD, Role.ADMIN),
+router.get(
+    "/me",
+    auth(Role.TENANT, Role.LANDLORD, Role.ADMIN),
+    authController.geMyProfile
+)
 
-// )
- 
 
 export const authRotes = router;
