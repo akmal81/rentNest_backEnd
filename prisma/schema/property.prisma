@@ -8,7 +8,7 @@ model Property {
   bedRoom     Int?
   bathRoom    Int?
   squareFeet  Int?
-  rentAmount  Decimal             @db.Decimal(10, 0)
+  rentAmount  Int             
   isAvailable PropertyAvailablity @default(AVAILABLE)
 
   landlordId String

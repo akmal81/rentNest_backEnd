@@ -1,5 +1,16 @@
 import { Router } from "express";
+import { propertyController } from "./properties.controller";
 
-const roter = Router();
+const router = Router();
 
-export const propertyRoutes = roter;
+router.get(
+    "/",
+    propertyController.getAllProperty
+)
+router.get(
+    "/:id",
+    propertyController.getPropertyById
+)
+
+
+export const propertyRoutes = router;

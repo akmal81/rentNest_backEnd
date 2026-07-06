@@ -1,0 +1,171 @@
+import { PropertyWhereInput } from "../../../generated/prisma/models";
+import AppError from "../../errorHelper/appError";
+import { prisma } from "../../lib/prisma";
+import { IGetPropertyQuery } from "./properties.interface";
+import httpStatus from 'http-status'
+
+const getAllPropertyFromDb = async (query: IGetPropertyQuery) => {
+
+    const limit = query.limit ? Number(query.limit) : 10;
+    const page = query.page ? Number(query.page) : 1;
+    const skip = (page - 1) * limit;
+    const sortBy = query.sortBy ? query.sortBy : "createdAt";
+    const sortOrder = query.sortOrder ? query.sortOrder : "desc";
+
+    const andCondition: PropertyWhereInput[] = []
+
+
+    if (query.serchTerm) {
+        andCondition.push({
+            OR: [
+                {
+                    title: {
+                        contains: query.serchTerm,
+                        mode: "insensitive"
+                    }
+                },
+                {
+                    description: {
+                        contains: query.serchTerm,
+                        mode: "insensitive"
+                    }
+                },
+                {
+                    address: {
+                        contains: query.serchTerm,
+                        mode: "insensitive"
+                    }
+                },
+                {
+                    city: {
+                        contains: query.serchTerm,
+                        mode: "insensitive"
+                    }
+                },
+                {
+                    division: {
+                        contains: query.serchTerm,
+                        mode: "insensitive"
+                    }
+                },
+
+            ]
+        })
+    }
+    // search end
+
+    // fileter
+
+    if (query.location) {
+        andCondition.push({
+            city:{
+                equals:query.location,
+                mode:"insensitive"
+            }
+        })  
+    }
+
+    if (query.price) {
+        console.log(query.price);
+        andCondition.push({rentAmount:query.price})  
+    }
+
+    if (query.type) {
+        const category = await prisma.category.findUnique({
+            where:{
+                name:query.type
+            }
+        })
+        if (!category) {
+            throw new AppError(httpStatus.NOT_FOUND,"Property Type Not Found!");
+            
+        }
+
+        andCondition.push({categoryId:category.id})  
+    }
+
+
+    const properties = await prisma.property.findMany({
+        where:{
+            AND:andCondition
+        },
+        take:limit,
+        skip:skip,
+        orderBy:{
+            [sortBy] : sortOrder
+        },
+        include:{
+            landlord:{
+                select:{
+                    name:true,
+                    email:true,
+                    profile:{
+                        select:{
+                            phoneNumber:true
+                        }
+                },
+                
+            },
+        },
+        category:{
+            select:{
+                name:true
+            }
+        }
+            
+            // reviwes: true
+        },
+        
+    })
+
+const totalPropertyCount = await prisma.property.count({
+    where:{AND:andCondition}
+})
+
+return {
+    data:properties,
+    meta:{
+        page:page,
+        limit:limit,
+        total: Math.ceil(totalPropertyCount/limit)
+    }
+}
+
+    // end
+
+}
+
+
+const getPropertyByIdFromDb = async (propertyId:string) => {
+
+    const propertyDetails =  await prisma.property.findUniqueOrThrow({
+        where:{
+            id:propertyId
+        },
+        include:{
+            category:{
+                select:{
+                    name:true
+                }
+            },
+            landlord:{
+                select:{
+                    name:true,
+                    email:true,
+                    profile:{
+                        select:{
+                            phoneNumber:true
+                        }
+                    }
+                }
+            }
+        },
+
+    })
+    return propertyDetails
+}
+
+export const propertyServices = {
+    getAllPropertyFromDb,
+    getPropertyByIdFromDb
+}
