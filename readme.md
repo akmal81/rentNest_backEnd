@@ -27,6 +27,6 @@ Admin Password   : admin123
 
 
 # Rental Requests
-12. POSt/api/rentals	  Submit a rental request (tenant)
-13. GET/api/rentals	      Get user's rental requests
-14. GET/api/rentals/:id	  Get rental request details
+12. **POSt/api/rentals	  Submit a rental request (tenant)** // *check response*
+13. **GET/api/rentals	      Get user's rental requests**
+14. **GET/api/rentals/:id	  Get rental request details**
