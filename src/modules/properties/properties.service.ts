@@ -66,8 +66,7 @@ const getAllPropertyFromDb = async (query: IGetPropertyQuery) => {
     }
 
     if (query.price) {
-        console.log(query.price);
-        andCondition.push({rentAmount:query.price})  
+        andCondition.push({rentAmount:Number(query.price)})  
     }
 
     if (query.type) {

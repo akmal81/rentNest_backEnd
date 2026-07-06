@@ -9,7 +9,7 @@ model Property {
   bathRoom    Int?
   squareFeet  Int?
   rentAmount  Int             
-  isAvailable PropertyAvailablity @default(AVAILABLE)
+  availablity PropertyAvailablity @default(AVAILABLE)
 
   landlordId String
   landlord   User   @relation(fields: [landlordId], references: [id], onDelete: Cascade)

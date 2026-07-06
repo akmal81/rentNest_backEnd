@@ -1,5 +1,4 @@
-import { Prisma } from "../../../generated/prisma/client"
-import { Role } from "../../../generated/prisma/enums"
+
 import AppError from "../../errorHelper/appError"
 import { prisma } from "../../lib/prisma"
 import { ICreateNewProperty, IUpdateProperty } from "./landlord.interface"
@@ -7,12 +6,9 @@ import httpStatus from 'http-status'
 
 const createPropertyIntoDb = async (landlordId: string, payload: ICreateNewProperty) => {
 
-    const {rentAmount, ...restPayload }= payload
-    const converRentAmount = new Prisma.Decimal(rentAmount)
     const createdProperty = await prisma.property.create({
         data: {
-            ...restPayload,
-            rentAmount:converRentAmount,
+            ...payload,
             landlordId: landlordId,
         }
     })
