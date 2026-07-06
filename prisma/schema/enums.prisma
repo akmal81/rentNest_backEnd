@@ -8,3 +8,14 @@ enum ActiveStatus {
     ACTIVE
     BLOCK
 }
+
+enum PropertyAvailablity {
+    AVAILABLE
+    BOOKED
+}
+
+enum RentRequestStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}

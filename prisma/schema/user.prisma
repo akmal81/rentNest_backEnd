@@ -9,6 +9,10 @@ model User {
     updatedAt DateTime     @updatedAt
 
     profile Profile?
+    properties Property[]
+
+    tenantRequest RentRequest[]
+    
 
     @@index([email])
     @@map("users")

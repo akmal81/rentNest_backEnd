@@ -10,10 +10,10 @@ import { propertyRoutes } from "../modules/properties/properties.route";
 
 const router = Router();
 
-router.use("/auth", authRotes)
+router.use("/auth", authRotes) //todo refreshTOken optional
 router.use("/properties", propertyRoutes)
 router.use("/categories", categoryRotes)
-router.use("/landlord", landlordRotes)
+router.use("/landlord", landlordRotes)  // 
 router.use("/rentals", rentalRotes)
 router.use("/payments", paymentRotes)
 router.use("/reviews", reviewRotes)
