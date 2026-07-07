@@ -1,20 +1,28 @@
 model Property {
-  id          String              @id @default(uuid())
-  title       String              @db.VarChar(255)
-  description String              @db.Text
-  address     String              @db.Text
-  city        String              @db.VarChar(50)
-  division    String              @db.VarChar(50)
-  bedRoom     Int?
-  bathRoom    Int?
-  squareFeet  Int?
-  rentAmount  Int             
-  availablity PropertyAvailablity @default(AVAILABLE)
+  id               String              @id @default(uuid())
+  title            String              @db.VarChar(255)
+  description      String              @db.Text
+  address          String              @db.Text
+  city             String              @db.VarChar(50)
+  division         String              @db.VarChar(50)
+  bedRoom          Int?
+  bathRoom         Int?
+  squareFeet       Int?
+  balcony          Availablity         @default(NO)
+  BuiltInWardrobes Availablity         @default(NO)
+  parking          Availablity         @default(NO)
+  modularkitchen   Availablity         @default(NO)
+  lift             Availablity         @default(NO)
+  GasPipeline      Availablity         @default(NO)
+  airConditioning  Availablity         @default(NO)
+  powerBackup      Availablity         @default(NO)
+  rentAmount       Int
+  availablity      PropertyAvailablity @default(AVAILABLE)
 
   landlordId String
   landlord   User   @relation(fields: [landlordId], references: [id], onDelete: Cascade)
 
-  categoryId String  
+  categoryId String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   rentRequest RentRequest[]

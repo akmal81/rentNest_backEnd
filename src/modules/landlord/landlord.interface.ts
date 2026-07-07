@@ -1,4 +1,4 @@
-import { PropertyAvailablity } from "../../../generated/prisma/enums";
+import { Availablity, PropertyAvailablity } from "../../../generated/prisma/enums";
 
 export interface ICreateNewProperty {
     title: string;
@@ -24,6 +24,16 @@ export interface IUpdateProperty {
     bedRoom?: number;
     bathRoom?: number;
     squareFeet?: number;
+
+    balcony: Availablity;
+    BuiltInWardrobes: Availablity;
+    parking: Availablity;
+    modularkitchen: Availablity;
+    lift: Availablity;
+    GasPipeline: Availablity;
+    airConditioning: Availablity;
+    powerBackup: Availablity;
+
     rentAmount?: number;
     isAvailable?: PropertyAvailablity;
     categoryId?: string

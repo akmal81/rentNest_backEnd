@@ -1,3 +1,4 @@
+import { PropertyAvailablity } from "../../../generated/prisma/enums";
 import { PropertyWhereInput } from "../../../generated/prisma/models";
 import AppError from "../../errorHelper/appError";
 import { prisma } from "../../lib/prisma";
@@ -52,6 +53,9 @@ const getAllPropertyFromDb = async (query: IGetPropertyQuery) => {
             ]
         })
     }
+
+   
+
     // search end
 
     // fileter
@@ -83,7 +87,11 @@ const getAllPropertyFromDb = async (query: IGetPropertyQuery) => {
         andCondition.push({categoryId:category.id})  
     }
 
-
+ andCondition.push({
+        availablity:PropertyAvailablity.AVAILABLE
+    })
+    console.log(andCondition);
+    
     const properties = await prisma.property.findMany({
         where:{
             AND:andCondition
