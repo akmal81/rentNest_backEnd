@@ -23,4 +23,10 @@ router.get(
     adminController.getAllProperties
 )
 
+router.get(
+    "/rentals",
+    auth(Role.ADMIN),
+    adminController.getAllRentalRequest
+)
+
 export const adminRotes = router;

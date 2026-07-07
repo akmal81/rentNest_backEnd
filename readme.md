@@ -43,7 +43,7 @@ Admin Password   : admin123
 19. POST	/api/reviews	Create review (after completed rental)
 
 # Admin
-20. GET	/api/admin/users	Get all users
+20. **GET	/api/admin/users	Get all users**
 21. PATCH	/api/admin/users/:id	Update user status (ban/unban)
 22. GET	/api/admin/properties	Get all properties
 23. GET	/api/admin/rentals	Get all rental requests

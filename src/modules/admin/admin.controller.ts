@@ -52,14 +52,14 @@ const getAllProperties = catchAsync(
 );
 
 
-const getAllRentalReques = catchAsync(
+const getAllRentalRequest = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-
+const rentalRequest = await adminServices.getAllRentalRequesFromDb()
         sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,
             message: "",
-            data: {}
+            data: rentalRequest
         })
     }
 );
@@ -68,5 +68,5 @@ export const adminController = {
     getAllUser,
     updateUserStatus,
     getAllProperties,
-    getAllRentalReques
+    getAllRentalRequest
 }

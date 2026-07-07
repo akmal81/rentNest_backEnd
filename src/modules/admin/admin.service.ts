@@ -19,8 +19,8 @@ const updateUserStatusIntoDb = async (userId: string, status: ActiveStatus) => {
         where: {
             id: userId
         },
-        data: { 
-            status 
+        data: {
+            status
         },
         omit: {
             password: true
@@ -36,22 +36,44 @@ const getAllPropertiesFromDb = async () => {
         // todo if have time
         // take:2,
         // skip:
-        include:{
-            landlord:{
-                omit:{
-                    password:true
+        include: {
+            landlord: {
+                omit: {
+                    password: true
                 }
             },
-            category:true
+            category: true,
+
         },
-        
+
     })
     return properties
 
 }
 
 const getAllRentalRequesFromDb = async () => {
+    const rentalReques = await prisma.rentRequest.findMany({
+        include: {
+            property: {
+                include: {
+                    landlord: {
+                        omit: {
+                            password: true
+                        }
+                    }
+                },
 
+            },
+            tenant: {
+                omit: {
+                    password: true
+                }
+
+            }
+        }
+        
+    });
+    return rentalReques
 }
 
 
