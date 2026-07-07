@@ -30,3 +30,20 @@ Admin Password   : admin123
 12. **POSt/api/rentals	  Submit a rental request (tenant)** // *check response*
 13. **GET/api/rentals	      Get user's rental requests**
 14. **GET/api/rentals/:id	  Get rental request details**
+
+
+# Payments (Stripe / SSLCommerz)
+15. POST	/api/payments/create	Create a payment intent/session for an approved rental
+16. POST	/api/payments/confirm	Confirm/verify payment (webhook or callback)
+17. GET	/api/payments	Get user's payment history
+18. GET	/api/payments/:id	Get payment details
+
+
+# Reviews
+19. POST	/api/reviews	Create review (after completed rental)
+
+# Admin
+20. GET	/api/admin/users	Get all users
+21. PATCH	/api/admin/users/:id	Update user status (ban/unban)
+22. GET	/api/admin/properties	Get all properties
+23. GET	/api/admin/rentals	Get all rental requests

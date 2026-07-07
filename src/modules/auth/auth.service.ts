@@ -6,6 +6,7 @@ import httpStatus from 'http-status'
 import config from "../../config"
 import { jwtUtils } from "../../utils/jwt"
 import { SignOptions } from "jsonwebtoken"
+import { ActiveStatus } from "../../../generated/prisma/enums"
 
 const registerUserIntoDb = async (paylod: IRegisterUserPayload) => {
     const { name, email, password, role, profilePhoto } = paylod
@@ -56,11 +57,15 @@ const loginUser = async (payload: ILogininUserPayload) => {
         },
     })
 
-    if (user.status === "BLOCK") {
-        throw new AppError(httpStatus.FORBIDDEN, "Your user account is blocke please contact support!")
+    if (user.status === ActiveStatus.BLOCK) {
+        throw new AppError(httpStatus.FORBIDDEN, "Your user account is banned! please contact support")
     }
 
     const isPasswordMatched = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatched) {
+        throw new AppError(httpStatus.FORBIDDEN, "Wrong Password");
+    }
 
     const jwtPayload = {
         id : user.id,
