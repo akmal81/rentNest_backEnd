@@ -8,14 +8,7 @@ model Property {
   bedRoom          Int?
   bathRoom         Int?
   squareFeet       Int?
-  balcony          Availablity         @default(NO)
-  BuiltInWardrobes Availablity         @default(NO)
-  parking          Availablity         @default(NO)
-  modularkitchen   Availablity         @default(NO)
-  lift             Availablity         @default(NO)
-  GasPipeline      Availablity         @default(NO)
-  airConditioning  Availablity         @default(NO)
-  powerBackup      Availablity         @default(NO)
+  amenities String[]
   rentAmount       Int
   availablity      PropertyAvailablity @default(AVAILABLE)
 

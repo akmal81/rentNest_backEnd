@@ -1,5 +1,5 @@
 
-import { RentRequestStatus } from "../../../generated/prisma/enums"
+import { PropertyAvailablity, RentRequestStatus } from "../../../generated/prisma/enums"
 import AppError from "../../errorHelper/appError"
 import { prisma } from "../../lib/prisma"
 import { ICreateNewProperty, IUpdateProperty } from "./landlord.interface"
@@ -102,11 +102,37 @@ const getAllLandlordsRentalRequestsFromDb = async (landlordId: string) => {
 
 }
 
+const updatedPropertyAvailabilityStatus = async (propertyId: string, landlordId: string, payload: PropertyAvailablity) => {
+    const property = await prisma.property.findUniqueOrThrow({
+        where: {
+            id: propertyId
+        }
+    })
+
+    if (!property) {
+        throw new AppError(httpStatus.CONFLICT, "Property not Found")
+    }
+    if (property.landlordId !== landlordId) {
+        throw new AppError(httpStatus.CONFLICT, "Only owner can edit own property!!")
+    }
+
+    const updatedProperty = await prisma.property.update({
+        where: {
+            id: propertyId
+        },
+        data: {
+            availablity: payload
+        }
+
+    })
+    return updatedProperty
+}
+
 const updateRentalRequestStatusIntoDb = async (
-    rentalRequestId: string, 
+    rentalRequestId: string,
     status: RentRequestStatus) => {
 
-        // c
+    // c
 
     const transactionResult = await prisma.$transaction(
         async (tx) => {
@@ -118,12 +144,12 @@ const updateRentalRequestStatusIntoDb = async (
                     id: rentalRequestId
                 },
                 data: {
-                    status:status
+                    status: status
                 },
-                include:{
-                    property:{
+                include: {
+                    property: {
                         select: {
-                            availablity:true
+                            availablity: true
                         }
                     }
                 }
@@ -137,7 +163,7 @@ const updateRentalRequestStatusIntoDb = async (
                         id: updateRequestStatus.propertyId
                     },
                     data: {
-                        availablity: "BOOKED"
+                        availablity: PropertyAvailablity.RENTED
                     }
                 })
             }
@@ -148,11 +174,14 @@ const updateRentalRequestStatusIntoDb = async (
     return transactionResult
 }
 
+
+
 export const landLordServices = {
     createPropertyIntoDb,
     updatePropertyIntoDb,
     revomePropertyFromDb,
     getAllLandlordsRentalRequestsFromDb,
+    updatedPropertyAvailabilityStatus,
     updateRentalRequestStatusIntoDb
 }
 

@@ -21,7 +21,7 @@ Admin Password   : admin123
 7. **POST/api/landlord/properties            Create new property listing**
 8. **PUT/api/landlord/properties/:id         Update property listing**
 9. **DELETE/api/landlord/properties/:id      Remove property listing**
-
+  **extrea /properties/availability/:id"**
 10. **GET/api/landlord/requests   Get all rental requests for landlord's properties**
 11. **PATCH-/api/landlord/requests/:id        Approve or reject a rental request**
 
@@ -44,6 +44,6 @@ Admin Password   : admin123
 
 # Admin
 20. **GET	/api/admin/users	Get all users**
-21. PATCH	/api/admin/users/:id	Update user status (ban/unban)
-22. GET	/api/admin/properties	Get all properties
-23. GET	/api/admin/rentals	Get all rental requests
+21. **PATCH	/api/admin/users/:id	Update user status (ban/unban)**
+22. **GET	/api/admin/properties	Get all properties**
+23. **GET	/api/admin/rentals	Get all rental requests**

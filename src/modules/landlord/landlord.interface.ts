@@ -8,6 +8,7 @@ export interface ICreateNewProperty {
     division: string;
     bedRoom?: number;
     bathRoom?: number;
+    amenities?: string[];
     squareFeet: number;
     rentAmount: number;
     isAvailable: PropertyAvailablity;
@@ -24,17 +25,9 @@ export interface IUpdateProperty {
     bedRoom?: number;
     bathRoom?: number;
     squareFeet?: number;
-
-    balcony: Availablity;
-    BuiltInWardrobes: Availablity;
-    parking: Availablity;
-    modularkitchen: Availablity;
-    lift: Availablity;
-    GasPipeline: Availablity;
-    airConditioning: Availablity;
-    powerBackup: Availablity;
-
+    amenities?: string[];
     rentAmount?: number;
     isAvailable?: PropertyAvailablity;
     categoryId?: string
 }
+

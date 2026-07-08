@@ -66,6 +66,27 @@ const getAllLandlordsRentalRequests = catchAsync(
     }
 );
 
+const updatedPropertyAvailabilityStatus = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const landlordId = req.user?.id;
+        const propertyId = req.params.id;
+        const {availablility} = req.body
+        console.log(req.body);
+        const updateResult = await landLordServices.updatedPropertyAvailabilityStatus(
+            propertyId as string,
+            landlordId as string,
+            availablility
+            );
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.CREATED,
+            message: "Availability Updated Successfully",
+            data: updateResult
+        })
+    }
+)
+
+
 
 const updateRentalRequestStatus = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -88,5 +109,6 @@ export const landlordController = {
     updatedProperty,
     removeProperty,
     getAllLandlordsRentalRequests,
+    updatedPropertyAvailabilityStatus,
     updateRentalRequestStatus
 }

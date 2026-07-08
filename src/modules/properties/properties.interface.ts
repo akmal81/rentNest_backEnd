@@ -1,12 +1,13 @@
 import { PropertyWhereInput } from "../../../generated/prisma/models";
 
 export interface IGetPropertyQuery extends PropertyWhereInput{
-    serchTerm?:string;
+    searchTerm?:string;
     page?:string;
     limit?:string;
     sortBy?:string;
     sortOrder?:string;
     location?:string;
     price?:string;
-    type?:string
+    type?:string;
+    priceRange?:string
 }

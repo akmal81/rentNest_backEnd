@@ -25,6 +25,13 @@ router.get(
     auth(Role.LANDLORD),
     landlordController.getAllLandlordsRentalRequests
 )
+
+router.patch(
+    "/properties/availability/:id",
+    auth(Role.LANDLORD),
+    landlordController.updatedPropertyAvailabilityStatus
+)
+
 router.patch(
     "/requests/:id",
     auth(Role.LANDLORD),

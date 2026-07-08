@@ -12,6 +12,8 @@ enum ActiveStatus {
 enum PropertyAvailablity {
     AVAILABLE
     BOOKED
+    RENTED
+    MAINTENANCE
 }
 
 enum Availablity {
