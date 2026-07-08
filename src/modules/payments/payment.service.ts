@@ -45,7 +45,8 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
     const newPayment = await prisma.payment.create({
         data: {
             transactionId: transId,
-            rentalRequestId: requestId
+            rentalRequestId: requestId,
+            userId
         },
         omit: {
             nextRentDate: true,
@@ -54,7 +55,7 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
         }
     })
 
-    return { rentInfo, ...newPayment, GatewayPageURL }
+    return { ...newPayment, GatewayPageURL }
 }
 
 // 
@@ -90,26 +91,31 @@ const confirmPayment = async (
 
 // 
 
-const getUserPaymentHistory = async(userId:string)=>{
-    const paymentHistory = await prisma.user.findUniqueOrThrow({
-        where:{
-            id:userId
+const getUserPaymentHistory = async (userId: string) => {
+    const paymentHistory = await prisma.payment.findMany({
+        where: {
+            userId
         },
-        include:{
-            tenantRequest:true
-
-        },
-        omit:{
-            password:true
+        orderBy: {
+            createdAt: "desc"
         }
     })
-
     return paymentHistory
 }
 
 
+const getPaymentDetailsById = async (paymentId: string) => {
+    const payment = await prisma.payment.findUniqueOrThrow({
+        where: {
+            id: paymentId
+        }
+    })
+    return payment
+}
+
 export const paymentServices = {
     createPaymentSSlCommerz,
     confirmPayment,
-    getUserPaymentHistory
+    getUserPaymentHistory,
+    getPaymentDetailsById
 }

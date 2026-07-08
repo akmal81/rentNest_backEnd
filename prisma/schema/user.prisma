@@ -11,6 +11,8 @@ model User {
     profile Profile?
     properties Property[]
 
+    payments Payment[]
+
     tenantRequest RentRequest[]
     
 

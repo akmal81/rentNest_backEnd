@@ -33,10 +33,10 @@ Admin Password   : admin123
 
 
 # Payments (Stripe / SSLCommerz)
-15. POST	/api/payments/create	Create a payment intent/session for an approved rental
-16. POST	/api/payments/confirm	Confirm/verify payment (webhook or callback)
-17. GET	/api/payments	Get user's payment history
-18. GET	/api/payments/:id	Get payment details
+15. **POST	/api/payments/create	Create a payment intent/session for an approved rental**
+16. **POST	/api/payments/confirm	Confirm/verify payment(webhook or callback)**
+17. **GET	/api/payments	Get user's payment history**
+18. **GET	/api/payments/:id	Get payment details**
 
 
 # Reviews

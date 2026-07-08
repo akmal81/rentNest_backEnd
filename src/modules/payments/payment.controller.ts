@@ -32,7 +32,7 @@ const confirmPayment = catchAsync(
             tranId as string,
             status as string,
             payload)
-        console.log(result);
+        
         sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,
@@ -43,7 +43,35 @@ const confirmPayment = catchAsync(
 )
 
 
+const getUserPaymentHistory = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id
+        const paymentHistory = await paymentServices.getUserPaymentHistory(userId as string)
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "Payment History Retrive successfull!!",
+            data: paymentHistory
+        })
+    }
+);
+
+const getUserPaymentDetails = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const paymentId = req.params.id
+        const payment = await paymentServices.getPaymentDetailsById(paymentId as string)
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "Payment Details Retrive successfull!!",
+            data: payment
+        })
+    }
+);
+
 export const paymentsController = {
     createPayment,
-    confirmPayment
+    confirmPayment,
+    getUserPaymentHistory,
+    getUserPaymentDetails
 }

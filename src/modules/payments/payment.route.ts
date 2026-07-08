@@ -19,7 +19,15 @@ router.post(
 
 router.get(
     "/",
-    
+    auth(Role.ADMIN, Role.LANDLORD, Role.TENANT),
+    paymentsController.getUserPaymentHistory
+
+)
+router.get(
+    "/:id",
+    auth(Role.ADMIN, Role.LANDLORD, Role.TENANT),
+    paymentsController.getUserPaymentDetails
+
 )
 
 export const paymentRotes = router;
