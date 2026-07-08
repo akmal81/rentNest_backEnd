@@ -44,7 +44,7 @@ export const auth = (...roles: Role[]) => {
             const verifiedToken = jwtUtils.verifiedToken(token, config.jwt_access_secret)
 
             if (!verifiedToken.success) {
-                throw new AppError(httpStatus.BAD_REQUEST, "Vefification Failed")
+                throw new AppError(httpStatus.BAD_REQUEST, "Verification Failed")
             }
 
             const { email, name, id, role } = verifiedToken.data as JwtPayload;

@@ -47,3 +47,97 @@ Admin Password   : admin123
 21. **PATCH	/api/admin/users/:id	Update user status (ban/unban)**
 22. **GET	/api/admin/properties	Get all properties**
 23. **GET	/api/admin/rentals	Get all rental requests**
+
+
+
+
+
+
+## deploy doc
+
+1. **install tsup**
+
+change script  in package.json
+
+"build": "tsup",
+
+
+add a tsup.config.ts at root dir
+
+```ts
+import { defineConfig } from "tsup";
+
+export default defineConfig({
+
+    entry: ["src/server.ts"],
+
+    //format: ["esm", "cjs"], // Keep this as ESM
+    format: ["esm"], // Keep this as ESM
+
+    target: "esnext",
+
+    outDir: "dist",
+
+    clean: true,
+
+    bundle: true,
+
+    splitting: false,
+
+    sourcemap: true,
+
+    // Add this banner to shim require() for CJS dependencies
+
+    banner: {
+
+        js: `
+
+   import { createRequire } from 'module';
+
+   const require = createRequire(import.meta.url);
+
+  `,
+
+    },
+
+});
+```
+2. **build and test dist folder**
+```bash
+npm run build
+npm run start
+```
+
+add this two file in tsconfig.ts
+
+```ts
+"include": ["src/**/*"],
+  "exclude": []
+```
+
+3. **deploy in vercel **
+```bash
+npm i -g vercel // vercel not installed before
+vercel login
+vercel --prod
+```
+
+4. add a vercel.json at root dir
+
+```ts
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "dist/server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "dist/server.js"
+        }
+    ]
+}
+```

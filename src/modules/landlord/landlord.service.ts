@@ -136,9 +136,6 @@ const updateRentalRequestStatusIntoDb = async (
 
     const transactionResult = await prisma.$transaction(
         async (tx) => {
-            // if already approved
-
-            // const checkRent
             const updateRequestStatus = await tx.rentRequest.update({
                 where: {
                     id: rentalRequestId
@@ -156,7 +153,7 @@ const updateRentalRequestStatusIntoDb = async (
             })
 
 
-            if (updateRequestStatus.status === "APPROVED") {
+            if (updateRequestStatus.status === RentRequestStatus.APPROVED) {
 
                 await tx.property.update({
                     where: {
@@ -167,11 +164,35 @@ const updateRentalRequestStatusIntoDb = async (
                     }
                 })
             }
+            if (updateRequestStatus.status === RentRequestStatus.REJECTED) {
+
+                await tx.property.update({
+                    where: {
+                        id: updateRequestStatus.propertyId
+                    },
+                    data: {
+                        availablity: PropertyAvailablity.AVAILABLE
+                    }
+                })
+            }
 
             return updateRequestStatus
         }
     )
-    return transactionResult
+
+    const approvedRequestInfo = await prisma.rentRequest.findUniqueOrThrow({
+        where: {
+                    id: transactionResult.id
+                },
+                include: {
+                    property: {
+                        select: {
+                            availablity: true
+                        }
+                    }
+                }
+    })
+    return approvedRequestInfo
 }
 
 
