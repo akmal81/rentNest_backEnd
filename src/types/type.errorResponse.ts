@@ -3,3 +3,8 @@ export interface IErroResponse {
     message:string;
     errorDetails?:unknown
 }
+
+export interface IErrorSources {
+    path: string;
+    message: string
+}
