@@ -10,7 +10,8 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
     const rentInfo = await prisma.rentRequest.findFirstOrThrow(
         {
             where: {
-                id: requestId
+                id: requestId,
+                tenantId:userId
             },
             include: {
                 tenant: {
@@ -23,6 +24,8 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
             }
         }
     )
+
+    
 
     if (rentInfo.status === RentRequestStatus.REJECTED) {
         throw new AppError(httpStatus.CONFLICT, "Your rent request has been rejected by property owner ")
@@ -46,7 +49,8 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
         data: {
             transactionId: transId,
             rentalRequestId: requestId,
-            userId
+            userId,
+            rentAmount
         },
         omit: {
             nextRentDate: true,
@@ -56,6 +60,7 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
     })
 
     return { ...newPayment, GatewayPageURL }
+    // return rentInfo
 }
 
 // 

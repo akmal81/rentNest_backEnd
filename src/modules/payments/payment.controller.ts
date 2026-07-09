@@ -15,7 +15,7 @@ const createPayment = catchAsync(
         sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,
-            message: "Payment Initiated successfully!! Please Confirm Your Payment",
+            message: "Payment Initiated successfully!!",
             data: result
         })
     }

@@ -110,8 +110,10 @@ const getAllPropertyFromDb = async (query: IGetPropertyQuery) => {
     andCondition.push({
         availablity: PropertyAvailablity.AVAILABLE
     })
+    andCondition.push({
+        isDeleted: false
+    })
     
-
     const properties = await prisma.property.findMany({
         where: {
             AND: andCondition
@@ -169,7 +171,7 @@ const getPropertyByIdFromDb = async (propertyId: string) => {
 
     const propertyDetails = await prisma.property.findUniqueOrThrow({
         where: {
-            id: propertyId
+            id: propertyId,
         },
         include: {
             category: {
@@ -191,6 +193,10 @@ const getPropertyByIdFromDb = async (propertyId: string) => {
         },
 
     })
+
+    if(propertyDetails.isDeleted === true){
+        throw new AppError(httpStatus.NOT_FOUND,"Sorry! Property is deleted");  
+    }
     return propertyDetails
 }
 

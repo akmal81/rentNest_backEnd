@@ -44,7 +44,7 @@ const removeProperty = catchAsync(
         );
         sendResponse(res, {
             success: true,
-            statusCode: httpStatus.CREATED,
+            statusCode: httpStatus.OK,
             message: "Property Removed Successfully",
             data: removedResult
         })
@@ -79,7 +79,7 @@ const updatedPropertyAvailabilityStatus = catchAsync(
             );
         sendResponse(res, {
             success: true,
-            statusCode: httpStatus.CREATED,
+            statusCode: httpStatus.OK,
             message: "Availability Updated Successfully",
             data: updateResult
         })

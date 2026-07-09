@@ -7,7 +7,7 @@ export const handleZodError = (err: z.ZodError): IErroResponse => {
 
 
     const statusCode = status.BAD_REQUEST;
-    const message = "Zod Validation Error";
+    const message = "Validation Error";
     const errorSources: IErrorSources[] = [];
 
 

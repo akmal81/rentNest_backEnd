@@ -4,9 +4,21 @@ import httpStatus from 'http-status'
 
 const submitRentalRequestIntoDb = async (tenantId: string, propertyId: string) => {
 
+    const isTenantIdhasAnyrequestBefore = await prisma.rentRequest.findFirst(
+        {
+            where: {
+                tenantId, propertyId
+            }
+        }
+    )
+
+    if (isTenantIdhasAnyrequestBefore) {
+        throw new AppError(httpStatus.CONFLICT, "You Already submit a request on this property");
+    }
+
     const isPropartyAvailable = await prisma.property.findUnique({
         where: {
-            id: propertyId
+            id: propertyId,
         }
     })
 
@@ -23,6 +35,9 @@ const submitRentalRequestIntoDb = async (tenantId: string, propertyId: string) =
             propertyId
         }
     })
+
+
+
     const requester = await prisma.rentRequest.findUnique({
         where: {
             id: submitRequestData.id,

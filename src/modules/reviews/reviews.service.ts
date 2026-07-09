@@ -6,7 +6,7 @@ import { ICreateReviewsPayload } from "./reviews.interface"
 
 const createReviews = async (userId: string, payload: ICreateReviewsPayload) => {
 
-    
+
     const { rentalRequesId, propertyId, content } = payload;
     const rentalRequest = await prisma.rentRequest.findUniqueOrThrow(
         {
@@ -18,13 +18,12 @@ const createReviews = async (userId: string, payload: ICreateReviewsPayload) => 
             }
         }
     )
-console.log(rentalRequest);
     if (!rentalRequest) {
 
         throw new AppError(httpStatus.CONFLICT, "Rental Request Not Found")
     }
 
-    if(rentalRequest.status !== RentRequestStatus.COMPELETED){
+    if (rentalRequest.status !== RentRequestStatus.COMPELETED) {
         throw new AppError(httpStatus.CONFLICT, "You can post a review once the rental agreement is completed")
     }
 

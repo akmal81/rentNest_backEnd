@@ -2,17 +2,21 @@ import { Router } from "express";
 import { auth } from "../../middlewares/auth";
 import { Role } from "../../../generated/prisma/enums";
 import { landlordController } from "./landlord.controller";
+import { validateRequest } from "../../middlewares/validateRequest";
+import { createPropertyPayloadSchema, updatePropertyPayloadSchema } from "./landlord.validation";
 
 const router =Router();
 
 router.post(
     "/properties",
     auth(Role.LANDLORD),
+    validateRequest(createPropertyPayloadSchema),
     landlordController.createdProperty
 )
 router.put(
     "/properties/:id",
     auth(Role.LANDLORD),
+    validateRequest(updatePropertyPayloadSchema),
     landlordController.updatedProperty
 )
 router.delete(

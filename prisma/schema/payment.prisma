@@ -1,14 +1,14 @@
 model Payment {
-    id            String        @id @default(uuid())
-    transactionId String        @unique @db.VarChar(255)
-    status        PaymentStatus @default(PENDING)
-    nextRentDate  DateTime?
-
+    id              String        @id @default(uuid())
+    transactionId   String        @unique @db.VarChar(255)
+    status          PaymentStatus @default(PENDING)
+    nextRentDate    DateTime?
+    rentAmount      Int           @default(0)
     rentalRequestId String
-    rentalRequest   RentRequest @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
+    rentalRequest   RentRequest   @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
 
-    userId String
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

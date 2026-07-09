@@ -28,7 +28,7 @@ const updatePropertyIntoDb = async (propertyId: string, landlordId: string, payl
         throw new AppError(httpStatus.CONFLICT, "Property not Found")
     }
     if (property.landlordId !== landlordId) {
-        throw new AppError(httpStatus.CONFLICT, "Only owner can edit own property!!")
+        throw new AppError(httpStatus.CONFLICT, "Only owner can update own property!!")
     }
 
     const updatedProperty = await prisma.property.update({
@@ -52,14 +52,18 @@ const revomePropertyFromDb = async (propertyId: string, landlordId: string) => {
         throw new AppError(httpStatus.CONFLICT, "Property not Found")
     }
     if (property.landlordId !== landlordId) {
-        throw new AppError(httpStatus.CONFLICT, "Only owner can edit own property!!")
+        throw new AppError(httpStatus.CONFLICT, "Only owner can remove own property!!")
     }
 
-    const removedData = prisma.property.delete({
+    const removedData = prisma.property.update({
         where: {
             id: propertyId,
             landlordId: landlordId
+        },
+        data: {
+            isDeleted: true
         }
+
     })
     return removedData
 
@@ -74,8 +78,25 @@ const getAllLandlordsRentalRequestsFromDb = async (landlordId: string) => {
                 some: {}
             }
         },
+        omit:{
+            description:true,
+            bedRoom:true,
+            bathRoom:true,
+            squareFeet:true,
+            amenities:true,
+            city:true,
+            division:true,
+            createdAt:true,
+            updatedAt:true,
+            isDeleted:true,
+            categoryId:true,
+            landlordId:true
+        },
         include: {
             rentRequest: {
+                omit:{
+                    propertyId:true
+                },
                 include: {
                     tenant: {
                         select: {
@@ -91,9 +112,14 @@ const getAllLandlordsRentalRequestsFromDb = async (landlordId: string) => {
                     }
 
                 },
-
+            },
+            _count:{
+                select:{
+                    rentRequest:true
+                }
             }
-        }
+        },
+        
     })
 
 
@@ -103,6 +129,8 @@ const getAllLandlordsRentalRequestsFromDb = async (landlordId: string) => {
 }
 
 const updatedPropertyAvailabilityStatus = async (propertyId: string, landlordId: string, payload: PropertyAvailablity) => {
+
+
     const property = await prisma.property.findUniqueOrThrow({
         where: {
             id: propertyId
@@ -132,7 +160,7 @@ const updateRentalRequestStatusIntoDb = async (
     rentalRequestId: string,
     status: RentRequestStatus) => {
 
-    // c
+ 
 
     const transactionResult = await prisma.$transaction(
         async (tx) => {
@@ -182,15 +210,15 @@ const updateRentalRequestStatusIntoDb = async (
 
     const approvedRequestInfo = await prisma.rentRequest.findUniqueOrThrow({
         where: {
-                    id: transactionResult.id
-                },
-                include: {
-                    property: {
-                        select: {
-                            availablity: true
-                        }
-                    }
+            id: transactionResult.id
+        },
+        include: {
+            property: {
+                select: {
+                    availablity: true
                 }
+            }
+        }
     })
     return approvedRequestInfo
 }

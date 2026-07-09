@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Prisma } from "../../generated/prisma/client";
-import z, { unknown } from "zod";
+import z from "zod";
 import httpStatus from "http-status"
 import { IErroResponse } from "../types";
 import AppError from "../errorHelper/appError";
@@ -17,7 +17,6 @@ export const globalErrorHandler = async(
 
     let statusCode:number = 401 ;
     let errorMessage = err.message || "Internal Server Error";
-    let errorName = err.name || "Internal Server Error";
 
     if (err instanceof z.ZodError) {
         statusCode = httpStatus.BAD_REQUEST as number;
