@@ -2,15 +2,16 @@ Backend Repo     : https://github.com/your-username/rentnest-backend
 Live API         : https://rentnest-api.vercel.app
 API Docs         : https://documenter.getpostman.com/view/xxx
 Demo Video       : https://drive.google.com/file/d/xxx/view
-Admin Email      : admin@rentnest.com
-Admin Password   : admin123
+Admin Email      : admin@gmail.com
+Admin Password   : admin
+
 
 *Deadlin: July 09, 2026, 11:59 PM*
 
 # auth
 1. **POST/api/auth/register	Register new user**
 2. **POST/api/auth/login	    Login  user**
-3. **POST/api/auth/me	        user profile**
+3. **GET/api/auth/me	        user profile**
 
 # Properties (Public)
 4. **GET/api/properties	    Get all properties with filters (location, price, type)**
@@ -36,7 +37,7 @@ Admin Password   : admin123
 15. **POST	/api/payments/create	Create a payment intent/session for an approved rental**
 16. **POST	/api/payments/confirm	Confirm/verify payment(webhook or callback)**
 17. **GET	/api/payments	Get user's payment history**
-18. **GET	/api/payments/:id	Get payment details**
+18. *GET	/api/payments/:id	Get payment details*
 
 
 # Reviews
