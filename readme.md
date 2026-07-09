@@ -144,7 +144,7 @@ GET    /api/admin/rentals     Get all rental requests
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/your-username/rentnest-backend.git
+git clone https://github.com/akmal81/rentNest_backEnd.git
 cd rentnest-backend
 ```
 
@@ -155,26 +155,7 @@ npm install
 
 3. **Setup environment variables**
 Create a `.env` file in the root directory:
-```env
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/rentnest
-
-# JWT
-JWT_SECRET=your_jwt_secret_key_here
-JWT_EXPIRES_IN=7d
-
-# Stripe
-STRIPE_SECRET_KEY=your_stripe_secret_key
-STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-
-# SSLCommerz
-SSLCOMMERZ_STORE_ID=your_store_id
-SSLCOMMERZ_STORE_PASSWORD=your_store_password
-
-# Server
-PORT=3000
-NODE_ENV=development
-```
+Check the .evn.example file
 
 4. **Setup Prisma**
 ```bash
@@ -207,20 +188,6 @@ This creates an optimized build in the `dist/` folder using **tsup**.
 ```bash
 npm run start
 ```
-
-### Deploy to Vercel
-```bash
-# Install Vercel CLI (if not already installed)
-npm i -g vercel
-
-# Login to Vercel
-vercel login
-
-# Deploy to production
-vercel --prod
-```
-
-The project includes `vercel.json` configuration for seamless Vercel deployment.
 
 ---
 
@@ -272,21 +239,6 @@ prisma/
 
 ---
 
-## 📚 Documentation
-
-- **API Docs**: [Postman Collection](https://documenter.getpostman.com/view/xxx)
-- **Database Schema**: See `/prisma/schema/`
-- **Error Handling**: See `/src/errorHelper/`
-
----
-
-## 🧪 Testing
-
-```bash
-# Run tests (if configured)
-npm run test
-```
-
 ---
 
 ## 🤝 Contributing
@@ -309,7 +261,7 @@ This project is licensed under the **MIT License** - see the LICENSE file for de
 
 ## 👨‍💻 Author
 
-**Your Name** - [GitHub Profile](https://github.com/your-username)
+**Akmal Hossain** - [GitHub Profile](https://github.com/akmal81)
 
 ---
 
