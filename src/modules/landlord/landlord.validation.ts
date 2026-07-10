@@ -46,16 +46,16 @@ export const updatePropertyPayloadSchema = z.object({
         .string("Title must be string")
         .optional(),
     description: z
-        .string("Title must be string")
+        .string("Descrption must be string")
         .optional(),
     address: z
-        .string("Title must be string")
+        .string("Address must be string")
         .optional(),
     city: z
-        .string("Title must be string")
+        .string("City must be string")
         .optional(),
     division: z
-        .string("Title must be string")
+        .string("Division must be string")
         .optional(),
     bedRoom: z
         .number()
@@ -78,6 +78,12 @@ export const updatePropertyPayloadSchema = z.object({
         .number()
         .positive("Rent amount must be a positive number")
         .optional(),
+    availablity: z
+        .string("availablity must be string")
+        .optional(),
+    isDeleted: z
+        .boolean("isDeleted must be true of false")
+        .optional(),
     categoryId: z
         .string()
         .uuid("Invalid Category ID format")
@@ -86,5 +92,5 @@ export const updatePropertyPayloadSchema = z.object({
 
 
 export const updatedPropertyAvailabilitySchema = z.object({
-    
+
 })

@@ -11,6 +11,7 @@ model Property {
   amenities String[]
   rentAmount       Int
   availablity      PropertyAvailablity @default(AVAILABLE)
+  
 
   landlordId String
   landlord   User   @relation(fields: [landlordId], references: [id], onDelete: Cascade)

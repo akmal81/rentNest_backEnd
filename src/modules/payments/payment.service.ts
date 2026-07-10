@@ -3,7 +3,7 @@ import AppError from "../../errorHelper/appError";
 import { prisma } from "../../lib/prisma"
 import httpStatus from 'http-status'
 import { initiatePayment, varifyPayment } from "./paymentUtils";
-import axios from "axios";
+
 
 const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
 
@@ -35,6 +35,10 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
         throw new AppError(httpStatus.CONFLICT, "Your Rent Request is not APPROVED Yet!")
     }
 
+    if(rentInfo.tenantId !== userId){
+        throw new AppError(httpStatus.CONFLICT, "Sorry You are not a valid user!!")
+    }
+
     const cusName = rentInfo.tenant.name;
     const cusEmail = rentInfo.tenant.email;
     const rentAmount = rentInfo.property.rentAmount;
@@ -42,7 +46,7 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
     const { GatewayPageURL, transId } = await initiatePayment(rentAmount, cusName, cusEmail)
 
     if (!GatewayPageURL) {
-        throw new AppError(httpStatus.BAD_GATEWAY, "Somethis Went Wrong While Payment")
+        throw new AppError(httpStatus.BAD_GATEWAY, "Something Went Wrong While Payment")
     }
 
     const newPayment = await prisma.payment.create({
@@ -60,7 +64,7 @@ const createPaymentSSlCommerz = async (userId: string, requestId: string) => {
     })
 
     return { ...newPayment, GatewayPageURL }
-    // return rentInfo
+
 }
 
 // 
@@ -74,7 +78,7 @@ const confirmPayment = async (
 
 
     if (varifieddata.data.status !== "VALID") {
-        throw new AppError(httpStatus.NOT_ACCEPTABLE, "Sorry your payment is not validate");
+        throw new AppError(httpStatus.NOT_ACCEPTABLE, "Sorry your payment is not validated");
 
     }
 

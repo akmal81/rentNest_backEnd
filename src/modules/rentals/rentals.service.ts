@@ -1,3 +1,4 @@
+import { PropertyAvailablity } from "../../../generated/prisma/enums";
 import AppError from "../../errorHelper/appError";
 import { prisma } from "../../lib/prisma"
 import httpStatus from 'http-status'
@@ -25,8 +26,8 @@ const submitRentalRequestIntoDb = async (tenantId: string, propertyId: string) =
     if (!isPropartyAvailable) {
         throw new AppError(httpStatus.CONFLICT, "Property Not Found");
     }
-    if (isPropartyAvailable.availablity === "BOOKED") {
-        throw new AppError(httpStatus.CONFLICT, "Property Already Booked");
+    if (isPropartyAvailable.availablity === PropertyAvailablity.RENTED) {
+        throw new AppError(httpStatus.CONFLICT, "Property Already Rented ");
     }
 
     const submitRequestData = await prisma.rentRequest.create({

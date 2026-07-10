@@ -166,12 +166,10 @@ const getAllPropertyFromDb = async (query: IGetPropertyQuery) => {
 
 
 const getPropertyByIdFromDb = async (propertyId: string) => {
-
-
-
     const propertyDetails = await prisma.property.findUniqueOrThrow({
         where: {
             id: propertyId,
+            // availablity:PropertyAvailablity.AVAILABLE
         },
         include: {
             category: {

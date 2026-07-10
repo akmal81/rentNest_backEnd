@@ -51,21 +51,29 @@ const revomePropertyFromDb = async (propertyId: string, landlordId: string) => {
     if (!property) {
         throw new AppError(httpStatus.CONFLICT, "Property not Found")
     }
+    if(property.isDeleted === true){
+         throw new AppError(httpStatus.CONFLICT, "Property Already Deleted")
+    }
     if (property.landlordId !== landlordId) {
         throw new AppError(httpStatus.CONFLICT, "Only owner can remove own property!!")
     }
-
-    const removedData = prisma.property.update({
+  
+    const removedData =await prisma.property.update({
         where: {
             id: propertyId,
             landlordId: landlordId
         },
         data: {
-            isDeleted: true
+            isDeleted: true,
+            availablity:PropertyAvailablity.DELETED
         }
 
     })
-    return removedData
+    return {
+    propertyId: removedData.id,
+    title: removedData.title,
+    address: removedData.address,
+    }
 
 
 }
@@ -193,6 +201,17 @@ const updateRentalRequestStatusIntoDb = async (
                 })
             }
             if (updateRequestStatus.status === RentRequestStatus.REJECTED) {
+
+                await tx.property.update({
+                    where: {
+                        id: updateRequestStatus.propertyId
+                    },
+                    data: {
+                        availablity: PropertyAvailablity.AVAILABLE
+                    }
+                })
+            }
+            if (updateRequestStatus.status === RentRequestStatus.COMPELETED) {
 
                 await tx.property.update({
                     where: {

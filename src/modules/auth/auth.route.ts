@@ -22,7 +22,6 @@ router.post(
 router.get(
     "/me",
     auth(Role.TENANT, Role.LANDLORD, Role.ADMIN),
-    
     authController.geMyProfile
 )
 

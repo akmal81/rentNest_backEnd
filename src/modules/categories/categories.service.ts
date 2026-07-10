@@ -17,12 +17,7 @@ const getAllcategories =async()=>{
                     properties:true
                 }
             },
-            properties:{
-                select :{
-                    title:true,
-                    city:true
-                }
-            }
+           
         }
     })
     return allcategories
